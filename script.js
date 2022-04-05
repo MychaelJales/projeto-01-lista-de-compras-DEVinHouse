@@ -1,5 +1,6 @@
 const btnAdd = document.getElementById('btn-add');
 const btnRmvAll = document.getElementById('btn-rmv-all');
+const btnRmvSelect = document.getElementById('btn-rmv-select');
 const inputProduct = document.getElementById('input-product');
 const list = document.getElementById('list');
 
@@ -27,9 +28,18 @@ class ProductsList {
   
   removeById(itemId) {
     const oldState = this.getState;
-    const newState = oldState.filter(({ name, id }) => id !== itemId)
+    const newState = oldState.filter(({ name, id }) => id !== +itemId)
     this.setState = newState;
     this.updateList();
+  }
+
+  removeSelected() {
+    const itens = document.querySelectorAll('.form-check-input');
+    itens.forEach((item) => {
+      if (item.checked) {
+        this.removeById(item.value);
+      }
+    });
   }
 
   updateList() {
@@ -71,3 +81,4 @@ const productsList = new ProductsList();
 
 btnAdd.addEventListener('click', () => productsList.addState());
 btnRmvAll.addEventListener('click', () => productsList.removeAll());
+btnRmvSelect.addEventListener('click', () => productsList.removeSelected());
