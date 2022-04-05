@@ -1,4 +1,5 @@
 const btnAdd = document.getElementById('btn-add');
+const btnRmvAll = document.getElementById('btn-rmv-all');
 const inputProduct = document.getElementById('input-product');
 const list = document.getElementById('list');
 
@@ -17,6 +18,11 @@ class ProductsList {
 
   get getState() {
     return this.#state;
+  }
+
+  removeAll() {
+    this.setState = [];
+    this.updateList();
   }
   
   removeById(itemId) {
@@ -64,3 +70,4 @@ class ProductsList {
 const productsList = new ProductsList();
 
 btnAdd.addEventListener('click', () => productsList.addState());
+btnRmvAll.addEventListener('click', () => productsList.removeAll());
