@@ -18,14 +18,28 @@ class ProductsList {
   get getState() {
     return this.#state;
   }
+  
+  removeById(itemId) {
+    const oldState = this.getState;
+    const newState = oldState.filter(({ name, id }) => id !== itemId)
+    this.setState = newState;
+    this.updateList();
+  }
 
   updateList() {
     list.innerHTML = '';
     const state = this.getState;
     state.forEach((item) => {
       const li = document.createElement('li');
-      li.innerText = item.name;
+      li.innerHTML = `
+        <input class="form-check-input" type="checkbox" value="${item.id}" id="item-${item.id}" />
+        <label class="form-check-label" for="item-${item.id}">
+          ${item.name}
+        </label>
+        <button id="btn-rmv-${item.id}" type="button" class="btn btn-outline-danger btn-sm">🗑️</button>
+      `;
       list.appendChild(li);
+      document.getElementById(`btn-rmv-${item.id}`).addEventListener('click',() => productsList.removeById(item.id));
     });
   }
 
@@ -47,6 +61,6 @@ class ProductsList {
 
 }
 
-const productsList1 = new ProductsList();
+const productsList = new ProductsList();
 
-btnAdd.addEventListener('click', () => productsList1.addState());
+btnAdd.addEventListener('click', () => productsList.addState());
