@@ -6,8 +6,11 @@ const btnCloseModal1 = document.getElementById('btn-close-1');
 const btnCloseModal2 = document.getElementById('btn-close-2');
 
 const inputProduct = document.getElementById('input-product');
-const list = document.getElementById('list');
 const inputPrice = document.getElementById('input-price');
+
+const list = document.getElementById('list');
+
+const valueSales = document.getElementById('value-sales');
 
 // const state = [];
 
@@ -148,7 +151,8 @@ class ProductsList {
 
   sumAll() {
     const state = this.getState;
-    this.sumTotal = state.reduce((acc, cur) => acc + cur.value, 0);
+    this.sumTotal = parseFloat(state.reduce((acc, cur) => acc + cur.value, 0)).toFixed(2);
+    valueSales.innerText = `Total das Compras: R$ ${this.sumTotal}`;
   }
 
   closeModal() {
@@ -166,6 +170,7 @@ class ProductsList {
 }
 
 const productsList = new ProductsList();
+productsList.sumAll();
 
 btnAdd.addEventListener('click', () => productsList.addState());
 btnRmvAll.addEventListener('click', () => productsList.removeAll());
