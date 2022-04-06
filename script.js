@@ -2,6 +2,9 @@ const btnAdd = document.getElementById('btn-add');
 const btnRmvAll = document.getElementById('btn-rmv-all');
 const btnRmvSelect = document.getElementById('btn-rmv-select');
 const btnInsertModal = document.getElementById('btn-insert-modal');
+const btnCloseModal1 = document.getElementById('btn-close-1');
+const btnCloseModal2 = document.getElementById('btn-close-2');
+
 const inputProduct = document.getElementById('input-product');
 const list = document.getElementById('list');
 const inputPrice = document.getElementById('input-price');
@@ -100,6 +103,7 @@ class ProductsList {
         <button id="btn-rmv-${item.id}" type="button" class="btn btn-outline-danger btn-sm">🗑️</button>
       `;
       list.appendChild(li);
+      document.getElementById(`item-${item.id}`).checked = item.checked;
       document.getElementById(`item-${item.id}`).addEventListener('click',() => productsList.checkboxClick(item.id));
       document.getElementById(`btn-rmv-${item.id}`).addEventListener('click',() => productsList.removeById(item.id));
     });
@@ -122,6 +126,10 @@ class ProductsList {
   }
 
   addPrice() {
+    if (!inputPrice.value) {
+      alert('É necessário inserir um valor');
+      return null;
+    }
     const oldState = this.getState;
     const { idOpenModal } = this;
     const newState = oldState.map((item) => {
@@ -135,12 +143,25 @@ class ProductsList {
     this.setState = newState;
     this.sumAll();
     inputPrice.value = '';
+    myModal.hide();
   }
 
   sumAll() {
     const state = this.getState;
     this.sumTotal = state.reduce((acc, cur) => acc + cur.value, 0);
-    console.log(this.sumTotal);
+  }
+
+  closeModal() {
+    const oldState = this.getState;
+    const newState = oldState.map((item) => {
+      if (item.id === +this.idOpenModal) {
+        return {...item, checked: false};
+      } else {
+        return item;
+      }
+    });
+    this.setState = newState;
+    this.updateList();
   }
 }
 
@@ -149,12 +170,8 @@ const productsList = new ProductsList();
 btnAdd.addEventListener('click', () => productsList.addState());
 btnRmvAll.addEventListener('click', () => productsList.removeAll());
 btnRmvSelect.addEventListener('click', () => productsList.removeSelected());
-btnInsertModal.addEventListener('click', () => productsList.addPrice())
+btnInsertModal.addEventListener('click', () => productsList.addPrice());
+btnCloseModal1.addEventListener('click', () => productsList.closeModal());
+btnCloseModal2.addEventListener('click', () => productsList.closeModal());
 
-// var AmyModal = document.getElementById('AmyModal');
-var myModal = new bootstrap.Modal(document.getElementById('myModal'), {})
-
-/* AmyModal.addEventListener('click', function () {
-  myModal.show()
-}) */
-
+const myModal = new bootstrap.Modal(document.getElementById('myModal'), {});
