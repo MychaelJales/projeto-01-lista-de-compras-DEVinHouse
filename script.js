@@ -1,3 +1,6 @@
+import { getLocalStorage, setLocalStorage } from "./helpers/localStorage.js";
+
+
 const btnAdd = document.getElementById('btn-add');
 const btnRmvAll = document.getElementById('btn-rmv-all');
 const btnRmvSelect = document.getElementById('btn-rmv-select');
@@ -16,8 +19,8 @@ const valueSales = document.getElementById('value-sales');
 
 class ProductsList {
   #state;
-  constructor() {
-    this.#state = [];
+  constructor(state) {
+    this.#state = state;
     this.id = 1;
     this.idOpenModal = 0;
     this.sumTotal = 0;
@@ -25,6 +28,7 @@ class ProductsList {
 
   set setState (state) {
     this.#state = state;
+    setLocalStorage(state);
   }
 
   get getState() {
@@ -44,10 +48,10 @@ class ProductsList {
   }
 
   removeSelected() {
-    const itens = document.querySelectorAll('.form-check-input');
-    itens.forEach((item) => {
+    const oldState = this.getState;
+    oldState.forEach((item) => {
       if (item.checked) {
-        this.removeById(item.value);
+        this.removeById(item.id);
       }
     });
   }
@@ -110,6 +114,7 @@ class ProductsList {
       document.getElementById(`item-${item.id}`).addEventListener('click',() => productsList.checkboxClick(item.id));
       document.getElementById(`btn-rmv-${item.id}`).addEventListener('click',() => productsList.removeById(item.id));
     });
+    this.sumAll();
   }
 
   clearInput() {
@@ -169,8 +174,8 @@ class ProductsList {
   }
 }
 
-const productsList = new ProductsList();
-productsList.sumAll();
+const productsList = new ProductsList(getLocalStorage());
+productsList.updateList();
 
 btnAdd.addEventListener('click', () => productsList.addState());
 btnRmvAll.addEventListener('click', () => productsList.removeAll());
