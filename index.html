@@ -8,23 +8,32 @@
   <link rel="shortcut icon" href="./fav-icon.png" type="image/x-icon" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="./styles.css" rel="stylesheet" />
 </head>
 <body>
-  <header>
-    <h1>Minha Lista de Compras</h1>
-    <p id="value-sales"></p>
-  </header>
-  <main>
-    <div class="container-input">
-      <input placeholder="Insira sua nova compra" id="input-product" type="text">
-      <button id="btn-add" type="button" class="btn btn-dark">Adicionar</button>
-      <button id="btn-rmv-all" type="button" class="btn btn-danger">Remover Todos Produtos</button>
-      <button id="btn-rmv-select" type="button" class="btn btn-danger">Remover Produtos Selecionados</button>
-    </div>
-    <div class="container-list">
-      <ul id="list"></ul>
-    </div>
-    
+  <div class="container align-items-center">
+
+    <header>
+      <h1>Minha Lista de Compras</h1>
+      <p id="value-sales"></p>
+    </header>
+
+    <main>
+      <div class="container-input">
+        <div class="input-group mb-3">
+          <input id="input-product" type="text" class="form-control" placeholder="Insira sua nova compra" aria-describedby="btn-add">
+          <button class="btn btn-outline-secondary" type="button" id="btn-add">Adicionar</button>
+        </div>
+      </div>
+      <div class="container-list">
+        <ul id="list"></ul>
+        <div class="btns-rmv">
+          <button id="btn-rmv-all" type="button" class="btn btn-danger btn-sm" disabled>Apagar Lista</button>
+          <button id="btn-rmv-select" type="button" class="btn btn-danger btn-sm" disabled>Apagar Selecionados</button>
+        </div>
+      </div>
+    </main>
+  </div>
     <!-- Modal -->
     <div class="modal fade" id="myModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -34,7 +43,7 @@
             <button type="button" id="btn-close-1" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <input id="input-price" placeholder="Ex.: 10" type="number" />
+            <input id="input-price" class="form-control" placeholder="Ex.: 10" type="number" />
           </div>
           <div class="modal-footer">
             <button id="btn-close-2" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
@@ -43,7 +52,6 @@
         </div>
       </div>
     </div>
-  </main>
   <script src="script.js" type="module"></script>
 </body>
 </html>

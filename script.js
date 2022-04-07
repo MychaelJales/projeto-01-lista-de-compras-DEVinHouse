@@ -1,6 +1,5 @@
 import { getLocalStorage, setLocalStorage } from "./helpers/localStorage.js";
 
-
 const btnAdd = document.getElementById('btn-add');
 const btnRmvAll = document.getElementById('btn-rmv-all');
 const btnRmvSelect = document.getElementById('btn-rmv-select');
@@ -14,8 +13,6 @@ const inputPrice = document.getElementById('input-price');
 const list = document.getElementById('list');
 
 const valueSales = document.getElementById('value-sales');
-
-// const state = [];
 
 class ProductsList {
   #state;
@@ -114,7 +111,23 @@ class ProductsList {
       document.getElementById(`item-${item.id}`).addEventListener('click',() => productsList.checkboxClick(item.id));
       document.getElementById(`btn-rmv-${item.id}`).addEventListener('click',() => productsList.removeById(item.id));
     });
+    this.disabledBtns();
     this.sumAll();
+  }
+
+  disabledBtns() {
+    const state = this.getState;
+    if (state.length !== 0) {
+      btnRmvAll.disabled = false;
+    } else {
+      btnRmvAll.disabled = true;
+    }
+    const checked = state.find((item) => item.checked )
+    if (checked) {
+      btnRmvSelect.disabled = false;
+    } else {
+      btnRmvSelect.disabled = true;
+    }
   }
 
   clearInput() {
@@ -151,6 +164,7 @@ class ProductsList {
     this.setState = newState;
     this.sumAll();
     inputPrice.value = '';
+    btnRmvSelect.disabled = false;
     myModal.hide();
   }
 
