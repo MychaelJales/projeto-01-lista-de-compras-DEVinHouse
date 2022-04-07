@@ -16,7 +16,7 @@ const list = document.getElementById('list');
 const valueSales = document.getElementById('value-sales');
 const iconMood = document.getElementById('icon-mood');
 
-const cssVar = document.styleSheets[1].rules[0].style;
+const cssVar = document.styleSheets[1].cssRules[0].style;
 
 class ProductsList {
   #state;
@@ -230,5 +230,3 @@ btnCloseModal2.addEventListener('click', () => productsList.closeModal());
 toggleMood.addEventListener('click', () => productsList.mood())
 
 const myModal = new bootstrap.Modal(document.getElementById('myModal'), {});
-
-
