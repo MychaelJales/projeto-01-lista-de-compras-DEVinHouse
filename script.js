@@ -6,6 +6,7 @@ const btnRmvSelect = document.getElementById('btn-rmv-select');
 const btnInsertModal = document.getElementById('btn-insert-modal');
 const btnCloseModal1 = document.getElementById('btn-close-1');
 const btnCloseModal2 = document.getElementById('btn-close-2');
+const toggleMood = document.getElementById('toggle-mood');
 
 const inputProduct = document.getElementById('input-product');
 const inputPrice = document.getElementById('input-price');
@@ -13,6 +14,9 @@ const inputPrice = document.getElementById('input-price');
 const list = document.getElementById('list');
 
 const valueSales = document.getElementById('value-sales');
+const iconMood = document.getElementById('icon-mood');
+
+const cssVar = document.styleSheets[1].rules[0].style;
 
 class ProductsList {
   #state;
@@ -21,6 +25,7 @@ class ProductsList {
     this.id = 1;
     this.idOpenModal = 0;
     this.sumTotal = 0;
+    this.controllerMood = false;
   }
 
   set setState (state) {
@@ -135,6 +140,10 @@ class ProductsList {
   }
 
   addState() {
+    if (!inputProduct.value) {
+      alert('É necessário inserir um nome para o produto');
+      return null;
+    }
     const { id } = this;
     const { value } = inputProduct;
     const oldState = this.getState;
@@ -186,6 +195,27 @@ class ProductsList {
     this.setState = newState;
     this.updateList();
   }
+
+  mood() {
+    const toggle = !this.controllerMood;
+    this.controllerMood = toggle;
+
+    if (toggle) {
+      cssVar.cssText = `
+        --body-color: #262626;
+        --primary-color: #363636;
+        --secondary-color: #363636;
+        --font-color: #EEEEEE;`
+        iconMood.innerText = '🌚';
+    } else {
+      cssVar.cssText = `
+        --body-color: rgb(187, 187, 187);
+        --primary-color: rgb(241, 241, 241);
+        --secondary-color: rgb(221, 221, 221);
+        --font-color: rgb(27, 27, 27):`
+        iconMood.innerText = '🌞';
+    }
+  }
 }
 
 const productsList = new ProductsList(getLocalStorage());
@@ -197,5 +227,8 @@ btnRmvSelect.addEventListener('click', () => productsList.removeSelected());
 btnInsertModal.addEventListener('click', () => productsList.addPrice());
 btnCloseModal1.addEventListener('click', () => productsList.closeModal());
 btnCloseModal2.addEventListener('click', () => productsList.closeModal());
+toggleMood.addEventListener('click', () => productsList.mood())
 
 const myModal = new bootstrap.Modal(document.getElementById('myModal'), {});
+
+

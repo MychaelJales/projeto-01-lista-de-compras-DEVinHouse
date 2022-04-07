@@ -75,6 +75,21 @@ main {
   padding: 20px;
 }
 
+.container-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+/* .form-switch {
+  padding-left: 150px;
+} */
+
+#value-sales {
+  margin: 0;
+}
+
 @media (max-width: 600px) {
   body {
     padding: 50px 10px;
