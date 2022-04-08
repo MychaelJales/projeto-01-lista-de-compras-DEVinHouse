@@ -14,6 +14,7 @@ const inputPrice = document.getElementById('input-price');
 const list = document.getElementById('list');
 
 const valueSales = document.getElementById('value-sales');
+
 const iconMood = document.getElementById('icon-mood');
 
 const cssVar = document.styleSheets[1].cssRules[0].style;
@@ -81,6 +82,7 @@ class ProductsList {
     } else {
       this.idOpenModal = itemId;
       this.removePrice(itemId);
+      this.updateList();
     }
   }
 
@@ -106,12 +108,14 @@ class ProductsList {
       const li = document.createElement('li');
       li.innerHTML = `
         <input class="form-check-input" type="checkbox" value="${item.id}" id="item-${item.id}" />
-        <label class="form-check-label" for="item-${item.id}">
+        <label id="label-${item.id}" class="form-check-label" for="item-${item.id}">
           ${item.name}
         </label>
         <button id="btn-rmv-${item.id}" type="button" class="btn btn-outline-danger btn-sm">🗑️</button>
       `;
       list.appendChild(li);
+      const label = document.getElementById(`label-${item.id}`);
+      item.checked && (label.style.textDecoration = 'line-through');
       document.getElementById(`item-${item.id}`).checked = item.checked;
       document.getElementById(`item-${item.id}`).addEventListener('click',() => productsList.checkboxClick(item.id));
       document.getElementById(`btn-rmv-${item.id}`).addEventListener('click',() => productsList.removeById(item.id));
@@ -175,6 +179,7 @@ class ProductsList {
     inputPrice.value = '';
     btnRmvSelect.disabled = false;
     myModal.hide();
+    this.updateList();
   }
 
   sumAll() {
