@@ -1,12 +1,19 @@
 import { getLocalStorage, setLocalStorage } from "./helpers/localStorage.js";
 
 const btnAdd = document.getElementById('btn-add');
+btnAdd.title = 'Adiciona produtos na lista.'
 const btnRmvAll = document.getElementById('btn-rmv-all');
+btnRmvAll.title = 'Apaga todos produtos da lista.';
 const btnRmvSelect = document.getElementById('btn-rmv-select');
+btnRmvSelect.title = 'Apaga apenas itens marcados como comprados.';
 const btnInsertModal = document.getElementById('btn-insert-modal');
+btnInsertModal.title = 'Insere o valor no produto no valor total das compras.';
 const btnCloseModal1 = document.getElementById('btn-close-1');
+btnCloseModal1.title = 'Fechar campo.';
 const btnCloseModal2 = document.getElementById('btn-close-2');
+btnCloseModal2.title = 'Fechar campo.';
 const toggleMood = document.getElementById('toggle-mood');
+toggleMood.title = 'Alternar dark-mood/ligth-mood'
 
 const inputProduct = document.getElementById('input-product');
 const inputPrice = document.getElementById('input-price');
@@ -14,6 +21,7 @@ const inputPrice = document.getElementById('input-price');
 const list = document.getElementById('list');
 
 const valueSales = document.getElementById('value-sales');
+
 const iconMood = document.getElementById('icon-mood');
 
 const cssVar = document.styleSheets[1].cssRules[0].style;
@@ -22,7 +30,7 @@ class ProductsList {
   #state;
   constructor(state) {
     this.#state = state;
-    this.id = 1;
+    this.id = state.length > 0 ? state[state.length - 1].id + 1 : 1;
     this.idOpenModal = 0;
     this.sumTotal = 0;
     this.controllerMood = false;
@@ -81,6 +89,7 @@ class ProductsList {
     } else {
       this.idOpenModal = itemId;
       this.removePrice(itemId);
+      this.updateList();
     }
   }
 
@@ -106,18 +115,36 @@ class ProductsList {
       const li = document.createElement('li');
       li.innerHTML = `
         <input class="form-check-input" type="checkbox" value="${item.id}" id="item-${item.id}" />
-        <label class="form-check-label" for="item-${item.id}">
+        <label id="label-${item.id}" class="form-check-label" for="item-${item.id}">
           ${item.name}
         </label>
         <button id="btn-rmv-${item.id}" type="button" class="btn btn-outline-danger btn-sm">🗑️</button>
       `;
       list.appendChild(li);
-      document.getElementById(`item-${item.id}`).checked = item.checked;
-      document.getElementById(`item-${item.id}`).addEventListener('click',() => productsList.checkboxClick(item.id));
-      document.getElementById(`btn-rmv-${item.id}`).addEventListener('click',() => productsList.removeById(item.id));
+      this.configItemList(item);
     });
     this.disabledBtns();
     this.sumAll();
+  }
+
+  configItemList({ id, checked }) {
+    const label = document.getElementById(`label-${id}`);
+    const checkBox = document.getElementById(`item-${id}`);
+    const btnRmvOne = document.getElementById(`btn-rmv-${id}`);
+
+    checkBox.checked = checked;
+    checkBox.addEventListener('click',() => productsList.checkboxClick(id));
+    btnRmvOne.addEventListener('click',() => productsList.removeById(id));
+
+    btnRmvOne.title = 'Apagar item.'
+    if (checked) {
+      label.style.textDecoration = 'line-through';
+      checkBox.title = 'Desmarcar como comprado.';
+      label.title = 'Desmarcar como comprado.';
+    } else {
+      checkBox.title = 'Marcar como comprado.';
+      label.title = 'Marcar como comprado.';
+    }
   }
 
   disabledBtns() {
@@ -175,6 +202,7 @@ class ProductsList {
     inputPrice.value = '';
     btnRmvSelect.disabled = false;
     myModal.hide();
+    this.updateList();
   }
 
   sumAll() {
