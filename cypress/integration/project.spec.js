@@ -4,6 +4,7 @@ const INPUT_PRODUCT = 'input#input-product';
 const BTN_ADD = 'button#btn-add';
 const BTN_RMV_ALL = 'button#btn-rmv-all'
 const ITEM_LIST = 'ul#list>li';
+const LIST = 'ul#list';
 
 const addProduct = (product) => {
   cy.get(INPUT_PRODUCT).type(product.content);
@@ -138,5 +139,29 @@ describe('5 - Um botão para deletar todos os itens de uma única vez', () => {
     checkProductList(products);
     cy.get(BTN_RMV_ALL).click();
     cy.get(ITEM_LIST).should('not.exist');
+  });
+});
+
+describe('7 - Uma lista contendo os produtos já inseridos', () => {
+  beforeEach(() => {
+    cy.viewport(1366, 768);
+    cy.visit('./index.html');
+  });
+  
+  it('Será verificado se a página possui uma tag `ul` com `id = list`', () => {
+    cy.get(LIST).should('exist');
+  });
+
+  it('Adicionando varios produtos e verificando se cada item da lista possui um checkbox, o nome do produto e um botão', () => {
+    const products = [
+      {
+        content: 'Produto 01',
+      },
+    ]
+    products.forEach((product) => addProduct(product));
+    checkProductList(products);
+    cy.get(ITEM_LIST).find('input[type="checkbox"]').should('exist');
+    cy.get(ITEM_LIST).find('label').contains(products[0].content);
+    cy.get(ITEM_LIST).find('button#btn-rmv-1').should('exist');
   });
 });
