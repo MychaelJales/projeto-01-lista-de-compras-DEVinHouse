@@ -391,7 +391,7 @@ describe('10 - A lista deve ser salva no "localStorage" do navegador (incluindo 
     cy.get(ITEM_LIST).contains(products[2].content).should('exist');
   });
 
-  it('Verificando se a lista está sendo salva no localStorage e ao atualizar a pagina ela não apaga os produtos', () => {
+  it('Verificando se a lista está sendo salva no localStorage e ao atualizar a pagina ela não apaga os produtos marcados como comprados', () => {
     const products = [
       {
         content: 'Produto 01',
