@@ -73,12 +73,10 @@ class ProductsList {
         const value = 0;
         return {...item, value };
       } else {
-        console.log({ v: 'dentro do else', item });
         return item;
       }
     });
     this.setState = newState;
-    console.log(this.getState);
     this.sumAll();
   }
 
