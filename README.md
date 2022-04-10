@@ -41,21 +41,6 @@ Modulo-01-Projeto-01/
 │   ├── plugins # configurações do cypress
 │   ├── reports # configurações do cypress
 │   └── support # configurações do cypress
-│       ├── config
-│       │   ├── .env
-│       │   └── db.js
-│       ├── routes
-│       │   ├── index.js
-│       │   ├── logged.js
-│       │   ├── login.js
-│       │   ├── register.js
-│       │   └── urls.js
-│       ├── utils
-│       │   ├── utils.js
-│       │   └── server.js
-│       ├── models
-│       │   ├── Users.js
-│       │   └── Url.js
 ├── helpers # funções de suporte ao código principal
 │   └── localStorage.js # funções de acesso ao localStorage
 ├── .gitignore # arquivos para o git ignorar
