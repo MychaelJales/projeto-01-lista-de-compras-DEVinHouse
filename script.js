@@ -1,5 +1,7 @@
+// import de helpers
 import { getLocalStorage, setLocalStorage } from "./helpers/localStorage.js";
 
+//  Capturando todos botões e adicionando um title
 const btnAdd = document.getElementById('btn-add');
 btnAdd.title = 'Adiciona produtos na lista.'
 const btnRmvAll = document.getElementById('btn-rmv-all');
@@ -15,49 +17,55 @@ btnCloseModal2.title = 'Fechar campo.';
 const toggleMood = document.getElementById('toggle-mood');
 toggleMood.title = 'Alternar dark-mood/ligth-mood'
 
+// Capturando os inputs
 const inputProduct = document.getElementById('input-product');
 const inputPrice = document.getElementById('input-price');
 
+// capturando a <ul>
 const list = document.getElementById('list');
 
+// Capturando o <p> onde a soma dos preços é exibida
 const valueSales = document.getElementById('value-sales');
 
+// Capturando o ícone dos moods
 const iconMood = document.getElementById('icon-mood');
 
+// Capturando as variáveis CSS
 const cssVar = document.styleSheets[1].cssRules[0].style;
 
+// Criando a Classe 
 class ProductsList {
   #state;
   constructor(state) {
-    this.#state = state;
-    this.id = state.length > 0 ? state[state.length - 1].id + 1 : 1;
-    this.idOpenModal = 0;
-    this.sumTotal = 0;
-    this.controllerMood = false;
+    this.#state = state; // lista de compras
+    this.id = state.length > 0 ? state[state.length - 1].id + 1 : 1; // id de cada item da lista
+    this.idOpenModal = 0; // controla o id do item responsável por abrir o modal
+    this.sumTotal = 0; // soma total dos produtos comprados
+    this.controllerMood = false; // controla o mood
   }
 
-  set setState (state) {
+  set setState (state) { // salva a lista
     this.#state = state;
     setLocalStorage(state);
   }
 
-  get getState() {
+  get getState() { // pega os valores da lista
     return this.#state;
   }
 
-  removeAll() {
+  removeAll() { // remove todos os itens da lista
     this.setState = [];
     this.updateList();
   }
   
-  removeById(itemId) {
+  removeById(itemId) { // remove um item de acordo com a id dele
     const oldState = this.getState;
     const newState = oldState.filter(({ name, id }) => id !== +itemId)
     this.setState = newState;
     this.updateList();
   }
 
-  removeSelected() {
+  removeSelected() { // remove os itens que estão marcaods como comprados
     const oldState = this.getState;
     oldState.forEach((item) => {
       if (item.checked) {
@@ -66,7 +74,7 @@ class ProductsList {
     });
   }
 
-  removePrice(itemId) {
+  removePrice(itemId) { // ao desmarcar um item remove o valor dele do state
     const oldState = this.getState;
     const newState = oldState.map((item) => {
       if (item.id === +itemId) {
@@ -80,7 +88,7 @@ class ProductsList {
     this.sumAll();
   }
 
-  controllerModal(checked, itemId) {
+  controllerModal(checked, itemId) { // controla o modal para ele não ser aberto ao desmarcar um item
     if (checked) {
       this.idOpenModal = itemId;
       myModal.show()
@@ -91,7 +99,7 @@ class ProductsList {
     }
   }
 
-  checkboxClick(itemId) {
+  checkboxClick(itemId) { // atualiza o state ao marcar um item e também abre o modal
     const oldState = this.getState;
     const newState = oldState.map((item) => {
       if (item.id === +itemId) {
@@ -106,7 +114,7 @@ class ProductsList {
     this.controllerModal(checked, itemId);
   }
 
-  updateList() {
+  updateList() { // renderiza a lista na tela com a atualização dos dados
     list.innerHTML = '';
     const state = this.getState;
     state.forEach((item) => {
@@ -125,7 +133,7 @@ class ProductsList {
     this.sumAll();
   }
 
-  configItemList({ id, checked }) {
+  configItemList({ id, checked }) { // configura os itens da lista, adicionando listeners nos botões e checkbox's
     const label = document.getElementById(`label-${id}`);
     const checkBox = document.getElementById(`item-${id}`);
     const btnRmvOne = document.getElementById(`btn-rmv-${id}`);
@@ -145,7 +153,7 @@ class ProductsList {
     }
   }
 
-  disabledBtns() {
+  disabledBtns() { // controla se os botões 'remover todos' e 'remover selecionados' devem estar habilitados
     const state = this.getState;
     if (state.length !== 0) {
       btnRmvAll.disabled = false;
@@ -160,11 +168,11 @@ class ProductsList {
     }
   }
 
-  clearInput() {
+  clearInput() { // limpa o input de produtos
     inputProduct.value = '';
   }
 
-  addState() {
+  addState() { // adiciona o novo produto a lista
     if (!inputProduct.value) {
       alert('É necessário inserir um nome para o produto');
       return null;
@@ -180,7 +188,7 @@ class ProductsList {
     this.clearInput();
   }
 
-  addPrice() {
+  addPrice() { // adiciona o preço do produto 
     if (!inputPrice.value) {
       alert('É necessário inserir um valor');
       return null;
@@ -203,13 +211,13 @@ class ProductsList {
     this.updateList();
   }
 
-  sumAll() {
+  sumAll() { // soma todos os produtos marcados como comprados
     const state = this.getState;
     this.sumTotal = parseFloat(state.reduce((acc, cur) => acc + cur.value, 0)).toFixed(2);
     valueSales.innerText = `Total das Compras: R$ ${this.sumTotal}`;
   }
 
-  closeModal() {
+  closeModal() { // se o modal for fechado sem adicionar um preço, faz com que o checkbox não fique checked
     const oldState = this.getState;
     const newState = oldState.map((item) => {
       if (item.id === +this.idOpenModal) {
@@ -222,7 +230,7 @@ class ProductsList {
     this.updateList();
   }
 
-  mood() {
+  mood() { // atualiza as variáveis css para o controle do mood
     const toggle = !this.controllerMood;
     this.controllerMood = toggle;
 
@@ -244,9 +252,10 @@ class ProductsList {
   }
 }
 
-const productsList = new ProductsList(getLocalStorage());
-productsList.updateList();
+const productsList = new ProductsList(getLocalStorage()); // instancia a classe
+productsList.updateList(); // renderiza a lista
 
+// inserindo listeners nos botões
 btnAdd.addEventListener('click', () => productsList.addState());
 btnRmvAll.addEventListener('click', () => productsList.removeAll());
 btnRmvSelect.addEventListener('click', () => productsList.removeSelected());
@@ -255,4 +264,5 @@ btnCloseModal1.addEventListener('click', () => productsList.closeModal());
 btnCloseModal2.addEventListener('click', () => productsList.closeModal());
 toggleMood.addEventListener('click', () => productsList.mood())
 
+// instanciando o modal do bootstrap 
 const myModal = new bootstrap.Modal(document.getElementById('myModal'), {});
