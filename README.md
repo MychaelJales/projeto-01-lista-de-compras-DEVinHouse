@@ -1,5 +1,5 @@
 
-# Modulo-01-Projeto-01
+# Projeto-01-DEVinHouse
 - [Lista de Compras 🖥️ 📝](#ListadeCompras-️-)
   - [Requisitos](#requisitos)
   - [Instalação](#instalação)
@@ -32,7 +32,7 @@ Essa é uma aplicação com HTML, CSS e JavaScript apenas, para rodar precisa ap
 ##### Estrutura do aplicativo
 
 ```bash
-Modulo-01-Projeto-01/
+projeto-01-lista-de-compras-DEVinHouse/
 ├── README.md # este arquivo
 ├── cypress # responsável pelos testes
 │   ├── downloads 
@@ -63,7 +63,7 @@ Modulo-01-Projeto-01/
 
 ###### Instalando e Rodando os Testes
 
-- Acesse a pasta `./Modulo-01-Projeto-01`;
+- Acesse a pasta `./projeto-01-lista-de-compras-DEVinHouse`;
 - Instale as dependências da aplicação utilizando o comando `npm install`;
 - O processo não deve retornar erros. `Warns` *(Avisos)* não impedem seu funcionamento;
 - Rodar os testes com `npm run cy:open` (Para ver no navegador) ou `npm tests`;
